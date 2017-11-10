@@ -22,9 +22,9 @@ router.route('/signin')
 
 // ---------------------------------------------------------
 // House routes
-router.post('/houses', houseController.post);
+// router.post('/houses', houseController.post);
 router.route('/houses')
-    .get(requireAuth, houseController.post);
+    .post(requireAuth, houseController.post);
 router.get('/houses', houseController.getAll);
 
 export default router;

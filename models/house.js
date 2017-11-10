@@ -9,5 +9,13 @@ const houseSchema = new Schema({
     _votes: [{ type: Schema.ObjectId, ref: 'Vote' }]
 });
 
+houseSchema.pre('save', function(next) {
+    if(!this._votes.length) {
+        const initVote = new Vote();
+        this._votes.push(initVote);
+    }
+    next();
+});
+
 const House = mongoose.model('House', houseSchema);
 export default House;

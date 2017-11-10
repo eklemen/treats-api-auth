@@ -1,11 +1,10 @@
 import db from './../models';
+import Vote from '../models/vote';
 export const houseController = {};
 
 houseController.post = (req, res) => {
-    const { userId } = req.body;
-    const house = new db.House({
-        _creator: userId
-    });
+    // const { userId } = req.body;
+    const house = new db.House();
     house.save().then( newHouse => {
         return res.status(200).json({
             success: true,
@@ -20,20 +19,21 @@ houseController.post = (req, res) => {
 
 houseController.getAll = (req, res) => {
     db.House.find({})
-        .populate({
-            path: '_votes',
-            match: { 'isDeleted': false }
-        })
-        .then( house => {
+    // TODO: figure out correct popualate
+        // .populate({
+        //     path: '_votes',
+        //     model: 'Vote'
+        // })
+        .then( houses => {
             return res.status(200).json({
                 success: true,
-                data: house
+                data: houses
             });
         }).catch( err => {
         return res.status(500).json({
             message: err
         });
     });
-}
+};
 
 export default houseController;
