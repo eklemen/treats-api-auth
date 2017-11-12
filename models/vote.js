@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+mongoose.Promise = global.Promise;
+const { Schema } = mongoose;
 
 const voteSchema = new Schema({
     vote: { type: Number, default: 1 },

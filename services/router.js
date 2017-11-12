@@ -21,6 +21,11 @@ router.route('/signin')
     .post([requireLogin, authController.signin]);
 
 // ---------------------------------------------------------
+// User routes
+router.get('/users', authController.getUsers);
+
+
+// ---------------------------------------------------------
 // House routes
 // router.post('/houses', houseController.post);
 router.route('/houses')

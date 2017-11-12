@@ -46,9 +46,24 @@ function signup(req, res, next){
     })
 }
 
+function getUsers(req, res, next){
+    User.find({}, { password: 0 })
+        .then( users => {
+            return res.status(200).json({
+                success: true,
+                data: users
+            })
+        }).catch( err => {
+            return res.status(500).json({
+                message: err
+            })
+    })
+}
+
 const authController = {
     signup,
-    signin
+    signin,
+    getUsers
 };
 
 export default authController;
