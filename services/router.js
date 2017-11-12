@@ -27,4 +27,9 @@ router.route('/houses')
     .post(requireAuth, houseController.post);
 router.get('/houses', houseController.getAll);
 
+// ---------------------------------------------------------
+// Vote routes
+router.route('/houses/:id/vote')
+    .put(requireAuth, houseController.submitVote);
+
 export default router;

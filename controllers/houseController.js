@@ -1,5 +1,4 @@
 import db from './../models';
-import Vote from '../models/vote';
 export const houseController = {};
 
 houseController.post = (req, res) => {
@@ -19,11 +18,6 @@ houseController.post = (req, res) => {
 
 houseController.getAll = (req, res) => {
     db.House.find({})
-    // TODO: figure out correct popualate
-        // .populate({
-        //     path: '_votes',
-        //     model: 'Vote'
-        // })
         .then( houses => {
             return res.status(200).json({
                 success: true,
@@ -34,6 +28,25 @@ houseController.getAll = (req, res) => {
             message: err
         });
     });
+};
+
+houseController.submitVote = (req, res) => {
+    const { params: { id }, body } = req;
+    db.House.findByIdAndUpdate({_id: id},
+        { "$push": { votes: body } },
+        (err, data) => {
+            // console.log('data', data);
+            data.votes.push(body);
+            if(err || body.vote === 0) {
+                return res.status(500).json({
+                    error: err || 'Number must be 1 or -1'
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                data
+            })
+    })
 };
 
 export default houseController;
