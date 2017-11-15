@@ -16,6 +16,7 @@ function protectedRoute(req, res, next) {
 }
 router.route('/protected')
     .get(requireAuth, protectedRoute);
+router.get('/logout', authController.logout);
 
 // TODO: move this out _________________________________________
 router.use(function(req, res, next) {
@@ -41,6 +42,7 @@ router.route('/signup')
     .post(authController.signup);
 router.route('/signin')
     .post([requireLogin, authController.signin]);
+// router.get('/logout', authController.logout);
 
 // ---------------------------------------------------------
 // User routes
@@ -53,6 +55,7 @@ router.get('/users', authController.getUsers);
 router.route('/houses')
     .post(requireAuth, houseController.post);
 router.get('/houses', houseController.getAll);
+router.get('/houses/:id', houseController.getOne);
 
 // ---------------------------------------------------------
 // Vote routes

@@ -1,5 +1,4 @@
 import db from './../models';
-const ExtractJwt = require('passport-jwt').ExtractJwt;
 export const houseController = {};
 
 houseController.post = (req, res) => {
@@ -33,14 +32,49 @@ houseController.getAll = (req, res) => {
     });
 };
 
+houseController.getOne = (req, res) => {
+    const { id } = req.params;
+    console.log(req);
+    db.House.findById(id)
+        .then( house => {
+            if(house === null) {
+                return res.status(404).json({
+                    success: false,
+                    error: `Not Found: No house with id: '${id}'`
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                data: house
+            });
+        }).catch( err => {
+        return res.status(500).json({
+            message: err
+        });
+    });
+};
+
 houseController.submitVote = (req, res) => {
     const { params: { id }, body, decoded } = req;
     db.House.findByIdAndUpdate({_id: id},
         { "$push": { votes: { ...body, creator: decoded }} },
-        (err, data) => {
-            if(err || body.vote === 0) {
+        (error, data) => {
+            if(error) {
                 return res.status(500).json({
-                    error: err || 'Number must be 1 or -1'
+                    success: false,
+                    error
+                });
+            }
+            if(body.vote !== 1 || body.vote !== 1) {
+                return res.status(422).json({
+                    success: false,
+                    error: 'Invalid Data: vote must be 1 or -1 only.'
+                });
+            }
+            if(data === null){
+                return res.status(404).json({
+                    success: false,
+                    error: `House with id: '${id}' not found.`
                 });
             }
             return res.status(200).json({

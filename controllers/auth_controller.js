@@ -46,7 +46,13 @@ function signup(req, res, next){
     })
 }
 
-function getUsers(req, res, next){
+function logout(req, res, next) {
+    req.logout();
+    // req.session.destroy();
+    next()
+}
+
+function getUsers(req, res, next) {
     User.find({}, { password: 0 })
         .then( users => {
             return res.status(200).json({
@@ -63,6 +69,7 @@ function getUsers(req, res, next){
 const authController = {
     signup,
     signin,
+    logout,
     getUsers
 };
 

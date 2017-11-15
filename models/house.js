@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-import User from './user';
 const { Schema } = mongoose;
 
 const houseSchema = new Schema({
