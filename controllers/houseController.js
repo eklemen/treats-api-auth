@@ -1,12 +1,12 @@
 import db from './../models';
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-import jwt from 'jwt-simple';
-import config from '../config';
 export const houseController = {};
 
 houseController.post = (req, res) => {
-    // const { userId } = req.body;
+    const { decoded } = req;
     const house = new db.House();
+    house.creator = decoded;
+    house.votes.push({ vote: 1, creator: decoded });
     house.save().then( newHouse => {
         return res.status(200).json({
             success: true,

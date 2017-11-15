@@ -6,12 +6,13 @@ const { Schema } = mongoose;
 const houseSchema = new Schema({
     isDeleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
-    _creator: { type: Schema.ObjectId, ref: 'User' },
+    creator: String,
     votes: [{
         vote: { type: Number, default: 1, max: 1, min: -1 },
-        creator: String
+        creator: String,
+        created_at: { type: Date, default: Date.now }
     }]
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 houseSchema.pre('save', function(next) {
     console.log('this', this);
