@@ -9,7 +9,7 @@ const houseSchema = new Schema({
     _creator: { type: Schema.ObjectId, ref: 'User' },
     votes: [{
         vote: { type: Number, default: 1, max: 1, min: -1 },
-        _creator: { type: Schema.ObjectId, ref: 'User' }
+        creator: String
     }]
 });
 
@@ -18,7 +18,7 @@ houseSchema.pre('save', function(next) {
     if(!this.votes.length) {
         this.votes.push({
             vote: { type: Number, default: 1 },
-            _creator: { type: Schema.ObjectId, ref: 'User' }
+            creator: String
         });
     }
     next();

@@ -34,13 +34,9 @@ houseController.getAll = (req, res) => {
 };
 
 houseController.submitVote = (req, res) => {
-    const { params: { id }, body } = req;
-    const authToken = ExtractJwt.fromHeader('authorization')(req);
-    const decoded = jwt.decode(authToken, config.secret);
-    console.log('authToken', authToken);
-    console.log('decoded', decoded.sub);
+    const { params: { id }, body, decoded } = req;
     db.House.findByIdAndUpdate({_id: id},
-        { "$push": { votes: body, _creator: decoded.sub } },
+        { "$push": { votes: { ...body, creator: decoded }} },
         (err, data) => {
             if(err || body.vote === 0) {
                 return res.status(500).json({
