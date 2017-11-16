@@ -34,7 +34,6 @@ houseController.getAll = (req, res) => {
 
 houseController.getOne = (req, res) => {
     const { id } = req.params;
-    console.log(req);
     db.House.findById(id)
         .then( house => {
             if(house === null) {

@@ -48,8 +48,9 @@ function signup(req, res, next){
 
 function logout(req, res, next) {
     req.logout();
-    // req.session.destroy();
-    next()
+    res.json({
+        status: 'logged out'
+    });
 }
 
 function getUsers(req, res, next) {

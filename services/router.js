@@ -3,7 +3,6 @@ import express from 'express';
 const router = express.Router();
 import authController from '../controllers/auth_controller';
 import houseController from '../controllers/houseController';
-import passportService from './passport';
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 import jwt from 'jwt-simple';
 import config from '../config';
@@ -16,7 +15,17 @@ function protectedRoute(req, res, next) {
 }
 router.route('/protected')
     .get(requireAuth, protectedRoute);
+// ---------------------------------------------------------
+// Auth Routes
+router.route('/signup')
+    .post(authController.signup);
+router.route('/signin')
+    .post([requireLogin, authController.signin]);
 router.get('/logout', authController.logout);
+
+// ---------------------------------------------------------
+// User routes
+router.get('/users', authController.getUsers);
 
 // TODO: move this out _________________________________________
 router.use(function(req, res, next) {
@@ -33,21 +42,6 @@ router.use(function(req, res, next) {
     }
 });
 // __________________________________________________________
-
-
-
-// ---------------------------------------------------------
-// Auth Routes
-router.route('/signup')
-    .post(authController.signup);
-router.route('/signin')
-    .post([requireLogin, authController.signin]);
-// router.get('/logout', authController.logout);
-
-// ---------------------------------------------------------
-// User routes
-router.get('/users', authController.getUsers);
-
 
 // ---------------------------------------------------------
 // House routes
