@@ -26,9 +26,12 @@ var _passport2 = _interopRequireDefault(_passport);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+require('dotenv').config();
+
+
 var app = (0, _express2.default)();
 
-_mongoose2.default.connect(process.env.MONGO_URL, function () {
+_mongoose2.default.connect(process.env.MONGODB_URI, function () {
     console.log('mongo connected, you good fam...');
 });
 
