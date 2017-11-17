@@ -28,7 +28,6 @@ const jwtOptions = {
 };
 
 const jwtStrategy = new JwtStrategy(jwtOptions, (payload, done) => {
-    console.log('payload received', payload);
     User.findById(payload.sub, (err, user) => {
         if(err) return done(err, false);
         if(user) {

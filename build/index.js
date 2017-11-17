@@ -20,7 +20,7 @@ var _router = require('./services/router');
 
 var _router2 = _interopRequireDefault(_router);
 
-var _passport = require('./services/passport');
+var _passport = require('passport');
 
 var _passport2 = _interopRequireDefault(_passport);
 
@@ -34,7 +34,8 @@ _mongoose2.default.connect('mongodb://localhost/treats', function () {
 
 app.use((0, _morgan2.default)('combined'));
 app.use(_bodyParser2.default.json());
-app.use(_passport2.default);
+require('./services/passport');
+app.use(_passport2.default.initialize());
 app.use('/v1', _router2.default);
 
 var PORT = process.env.PORT || 3000;

@@ -1,10 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.localStrat = undefined;
-
 var _passport = require('passport');
 
 var _passport2 = _interopRequireDefault(_passport);
@@ -21,7 +16,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var JwtStrategy = require('passport-jwt').Strategy;
-var LocalStrategy = require('passport-local');
+var LocalStrategy = require('passport-local').Strategy;
 
 
 var localOptions = {
@@ -57,8 +52,6 @@ var jwtStrategy = new JwtStrategy(jwtOptions, function (payload, done) {
     });
 });
 
-var passportService = _passport2.default.use(jwtStrategy);
-var localStrat = exports.localStrat = _passport2.default.use(localStrategy);
-
-exports.default = passportService;
+_passport2.default.use(jwtStrategy);
+_passport2.default.use(localStrategy);
 //# sourceMappingURL=passport.js.map
