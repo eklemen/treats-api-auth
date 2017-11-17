@@ -11,16 +11,10 @@ const localOptions = {
 
 const localStrategy = new LocalStrategy(localOptions, function(email, password, done) {
     // verify the username and password
-    console.log('email', email);
-    console.log('pass', password);
     User.findOne({ email }, (err, user) => {
-        console.log('err', err);
-        console.log('user', user);
         if(err) return done(err);
         if(!user) return done(null, false);
         user.comparePassword(password, function(err, isMatch) {
-            console.log('err', err);
-            console.log('isMatch', isMatch);
             if(err) return done(err);
             if(!isMatch) return done(null, false);
             return done(null, user);
