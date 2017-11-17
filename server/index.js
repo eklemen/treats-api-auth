@@ -1,3 +1,4 @@
+require('dotenv').config();
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
@@ -7,7 +8,7 @@ import passport from 'passport';
 
 const app = express();
 
-mongoose.connect('mongodb://localhost/treats', () => {
+mongoose.connect(process.env.MONGODB_URI, () => {
     console.log('mongo connected, you good fam...');
 });
 

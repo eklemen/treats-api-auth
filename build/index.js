@@ -28,7 +28,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var app = (0, _express2.default)();
 
-_mongoose2.default.connect('mongodb://localhost/treats', function () {
+_mongoose2.default.connect(process.env.MONGO_URL, function () {
     console.log('mongo connected, you good fam...');
 });
 
