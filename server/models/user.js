@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 const { Schema } = mongoose;
-import bcrypt from 'bcrypt-nodejs'
+import bcrypt from 'bcrypt-nodejs';
 
 const validateEmail = (email) => (
     (/\S+@\S+\.\S+/).test(email)
@@ -35,7 +35,11 @@ userSchema.pre('save', function(next) {
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    console.log('candidatePassword', candidatePassword);
+    console.log('this.password', this.password);
+    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+        console.log('err', err);
+        console.log('isMatch from comp', isMatch);
         if(err) return cb(err);
         cb(null, isMatch);
     })

@@ -1,20 +1,26 @@
 import passport from 'passport';
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const JwtStrategy = require('passport-jwt').Strategy;
-const LocalStrategy = require('passport-local');
+const LocalStrategy = require('passport-local').Strategy;
 import User from '../models/user';
 import config from '../config';
 
 const localOptions = {
-    usernameField: 'email',
+    usernameField: 'email'
 };
 
-const localStrategy = new LocalStrategy(localOptions, (email, password, done) => {
+const localStrategy = new LocalStrategy(localOptions, function(email, password, done) {
     // verify the username and password
+    console.log('email', email);
+    console.log('pass', password);
     User.findOne({ email }, (err, user) => {
+        console.log('err', err);
+        console.log('user', user);
         if(err) return done(err);
         if(!user) return done(null, false);
-        user.comparePassword(password, (err, isMatch) => {
+        user.comparePassword(password, function(err, isMatch) {
+            console.log('err', err);
+            console.log('isMatch', isMatch);
             if(err) return done(err);
             if(!isMatch) return done(null, false);
             return done(null, user);
@@ -28,6 +34,7 @@ const jwtOptions = {
 };
 
 const jwtStrategy = new JwtStrategy(jwtOptions, (payload, done) => {
+    console.log('payload received', payload);
     User.findById(payload.sub, (err, user) => {
         if(err) return done(err, false);
         if(user) {
@@ -38,7 +45,5 @@ const jwtStrategy = new JwtStrategy(jwtOptions, (payload, done) => {
     })
 });
 
-const passportService = passport.use(jwtStrategy);
-export const localStrat = passport.use(localStrategy);
-
-export default passportService;
+passport.use(jwtStrategy);
+passport.use(localStrategy);

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../server/models/index.js"],"names":["User","House","Vote"],"mappings":";;;;;;AAAA;;;;AACA;;;;AACA;;;;;;kBAEe;AACXA,wBADW;AAEXC,0BAFW;AAGXC;AAHW,C","file":"index.js","sourcesContent":["import User from './user';\nimport House from './house';\nimport Vote from './vote';\n\nexport default {\n    User,\n    House,\n    Vote\n}"]}

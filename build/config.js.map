@@ -1,0 +1,1 @@
+{"version":3,"sources":["../server/config.js"],"names":["config","secret"],"mappings":";;;;;AAAA,IAAMA,SAAS;AACXC,YAAQ;AADG,CAAf;;kBAIeD,M","file":"config.js","sourcesContent":["const config = {\n    secret: 'This is a secret lkjasdflkjasdflkjasdflkasdlkfj'\n};\n\nexport default config;"]}

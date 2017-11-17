@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import router from './services/router';
+import passport from 'passport';
 
 const app = express();
 
@@ -12,6 +13,8 @@ mongoose.connect('mongodb://localhost/treats', () => {
 
 app.use(morgan('combined'));
 app.use(bodyParser.json());
+require('./services/passport');
+app.use(passport.initialize());
 app.use('/v1', router);
 
 const PORT = process.env.PORT || 3000;
