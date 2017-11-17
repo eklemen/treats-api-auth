@@ -19,7 +19,7 @@ app.use(passport.initialize());
 app.use('/v1', router);
 
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
+const HOST = process.env.HOST || '127.0.0.1';
 
 console.log('Listening on ', HOST, PORT);
 app.listen(PORT, HOST);
