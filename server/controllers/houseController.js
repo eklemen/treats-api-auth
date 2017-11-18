@@ -2,10 +2,21 @@ import db from '../models';
 export const houseController = {};
 
 houseController.post = (req, res) => {
-    const { decoded } = req;
+    const { decoded, body: { position } } = req;
+    if(
+        !position ||
+        !position.lat ||
+        !position.long
+    ) {
+        return res.status(422).json({
+            success: false,
+            error: 'Must provide a `position` object with `lat` and `long`'
+        })
+    }
     const house = new db.House();
     house.creator = decoded;
     house.votes.push({ vote: 1, creator: decoded });
+    house.position = position;
     house.save().then( newHouse => {
         return res.status(200).json({
             success: true,
