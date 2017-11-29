@@ -64,8 +64,51 @@ houseController.getOne = (req, res) => {
     });
 };
 
+// TODO prevent revotes from same person
 houseController.submitVote = (req, res) => {
     const { params: { id }, body, decoded } = req;
+    // db.House.findOne(
+    //     {_id: id},
+    //     { 'votes': { $elemMatch: {creator: decoded} }},
+    //     (error, house) => {
+    //         if(error || !house) {
+    //             return res.status(500).json({
+    //                 success: false,
+    //                 error
+    //             });
+    //         }
+    //         const foundVote = house.votes[0];
+    //         if(foundVote && foundVote.vote === body.vote) {
+    //             const v = body.vote === 1 ? 'up' : 'down';
+    //             return res.status(422).json({
+    //                 success: false,
+    //                 error: `You have already ${v}voted this house.`
+    //             });
+    //         }
+    //         house.votes[foundVote._id] = {
+    //             ...foundVote,
+    //             vote: body.vote
+    //         };
+    //         house.save();
+    //         return res.status(200).json({
+    //             success: true,
+    //             data: house
+    //         })
+    //         // house.update({ 'house.votes.creator': decoded }, { $set: {'house.votes.vote': body.vote}}, (err, response) => {
+    //         //     console.log('RES', response);
+    //         //     if(err) {
+    //         //         return res.status(500).json({
+    //         //             success: false,
+    //         //             error: err
+    //         //         });
+    //         //     }
+    //         //     return res.status(200).json({
+    //         //         success: true,
+    //         //         data: house
+    //         //     })
+    //         // });
+    //     }
+    // );
     db.House.findByIdAndUpdate({_id: id},
         { "$push": { votes: { ...body, creator: decoded }} },
         (error, data) => {
@@ -75,7 +118,7 @@ houseController.submitVote = (req, res) => {
                     error
                 });
             }
-            if(body.vote !== 1 || body.vote !== 1) {
+            if(body.vote !== 1 && body.vote !== -1) {
                 return res.status(422).json({
                     success: false,
                     error: 'Invalid Data: vote must be 1 or -1 only.'

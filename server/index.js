@@ -7,8 +7,9 @@ import router from './services/router';
 import passport from 'passport';
 
 const app = express();
+// process.env.MONGODB_URI heroku
 
-mongoose.connect(process.env.MONGODB_URI, () => {
+mongoose.connect(process.env.MONGODB_LOCAL, () => {
     console.log('mongo connected, you good fam...');
 });
 
