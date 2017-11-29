@@ -67,51 +67,14 @@ houseController.getOne = (req, res) => {
 // TODO prevent revotes from same person
 houseController.submitVote = (req, res) => {
     const { params: { id }, body, decoded } = req;
-    // db.House.findOne(
-    //     {_id: id},
-    //     { 'votes': { $elemMatch: {creator: decoded} }},
-    //     (error, house) => {
-    //         if(error || !house) {
-    //             return res.status(500).json({
-    //                 success: false,
-    //                 error
-    //             });
-    //         }
-    //         const foundVote = house.votes[0];
-    //         if(foundVote && foundVote.vote === body.vote) {
-    //             const v = body.vote === 1 ? 'up' : 'down';
-    //             return res.status(422).json({
-    //                 success: false,
-    //                 error: `You have already ${v}voted this house.`
-    //             });
-    //         }
-    //         house.votes[foundVote._id] = {
-    //             ...foundVote,
-    //             vote: body.vote
-    //         };
-    //         house.save();
-    //         return res.status(200).json({
-    //             success: true,
-    //             data: house
-    //         })
-    //         // house.update({ 'house.votes.creator': decoded }, { $set: {'house.votes.vote': body.vote}}, (err, response) => {
-    //         //     console.log('RES', response);
-    //         //     if(err) {
-    //         //         return res.status(500).json({
-    //         //             success: false,
-    //         //             error: err
-    //         //         });
-    //         //     }
-    //         //     return res.status(200).json({
-    //         //         success: true,
-    //         //         data: house
-    //         //     })
-    //         // });
-    //     }
-    // );
-    db.House.findByIdAndUpdate({_id: id},
-        { "$push": { votes: { ...body, creator: decoded }} },
+    db.House.findOneAndUpdate(
+        { _id: id, 'votes.creator': decoded },
+        { "$addToSet": { 'votes': { vote: body.vote, creator: decoded }} },
+        { new: true, upsert : true },
         (error, data) => {
+            console.log('err=========', error);
+            console.log('data=========', data);
+            console.log('decoded=========', decoded);
             if(error) {
                 return res.status(500).json({
                     success: false,
@@ -135,6 +98,57 @@ houseController.submitVote = (req, res) => {
                 data
             })
     })
+    // db.House.findOne(
+    //     {_id: id},
+    //     { 'votes': { $elemMatch: {creator: decoded} }},
+    //     (error, house) => {
+    //         if(error || !house) {
+    //             return res.status(500).json({
+    //                 success: false,
+    //                 error
+    //             });
+    //         }
+    //         const foundVote = house.votes[0];
+    //         if(foundVote && foundVote.vote === body.vote) {
+    //             const v = body.vote === 1 ? 'up' : 'down';
+    //             return res.status(422).json({
+    //                 success: false,
+    //                 error: `You have already ${v}voted this house.`
+    //             });
+    //         }
+    //
+    //         house.update({ 'house.votes.creator': decoded }, { $set: {'house.votes.vote': body.vote}}, (err, response) => {
+    //             console.log('RES', response);
+    //             if(err) {
+    //                 return res.status(500).json({
+    //                     success: false,
+    //                     error: err
+    //                 });
+    //             }
+    //             return res.status(200).json({
+    //                 success: true,
+    //                 data: house
+    //             })
+    //         });
+    //         // house.votes[0] = {
+    //         //     ...foundVote,
+    //         //     vote: body.vote
+    //         // };
+    //         // house.save((err, i) => {
+    //         //     if(err) {
+    //         //         console.log('errrrrrr', err);
+    //         //         return res.status(300).json({
+    //         //             success: false,
+    //         //             error: err
+    //         //         })
+    //         //     }
+    //         //     return res.status(200).json({
+    //         //         success: true,
+    //         //         data: house
+    //         //     })
+    //         // });
+    //     }
+    // );
 };
 
 export default houseController;
